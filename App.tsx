@@ -1,118 +1,102 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
+import { 
+  View, 
   StyleSheet,
   Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+} from "react-native";
+import React, {useState} from "react";
+import PickerItem from "./src/components/PickerItem";
+import CardConverted from "./src/components/CardConverted";
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+export default function App() {
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+  const [showCardConverter, setShowCardConverter] = useState(false);
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
+  const handleShowCardConverter = () => {
+    setShowCardConverter(true);
+  }
+
+  return(
+    <KeyboardAvoidingView 
+      style={styles.container}  
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <ScrollView>
+         <View style={styles.contentScrollView}>
+           <View style={styles.header}>
+             <Text style={styles.title}>Selecione sua moeda</Text>
+             <PickerItem/>
+             <Text style={styles.title}>Digite um valor para converter em (R$)</Text>
+             <TextInput
+               style={styles.textInput}
+               placeholder="EX: 150"
+               keyboardType="numeric"
+             />
+             <TouchableOpacity style={styles.buttonConverter} onPress={handleShowCardConverter}>
+               <Text style={styles.textButton}>Converter</Text>
+             </TouchableOpacity>
+          </View>
           {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
-
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+            showCardConverter ? <CardConverted handleClose={() =>setShowCardConverter(false)}/> : ""
+          }
+         </View>
+       </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+   container: {
+      flex: 1,
+      backgroundColor: "#1C1C1C",
+      paddingTop: 40,
+   },
 
-export default App;
+   header: {
+      backgroundColor: "#fff",
+      width: "90%",
+      borderTopLeftRadius: 8,
+      borderTopRightRadius: 8,
+      borderBottomLeftRadius: 8,
+      borderBottomRightRadius: 8
+   },
+
+   title: {
+     color: "#696969",
+     paddingTop: 10,
+     paddingLeft: 10,
+     fontWeight: "500",
+     fontSize: 16
+   },
+
+   textInput: {
+      paddingTop: 10,
+      paddingLeft: 10,
+      fontSize: 20,
+      marginBottom: 10
+   },
+
+   buttonConverter: {
+     backgroundColor: "#FF0000",
+     padding: 20,
+     borderBottomLeftRadius: 8,
+     borderBottomRightRadius: 8,
+     justifyContent: "center",
+     alignItems: "center"
+   },
+
+   textButton: {
+      fontSize: 17,
+      color: "#fff",
+      fontWeight: "500"
+   },
+
+   contentScrollView: {
+      alignItems: "center",
+      flexGrow: 1
+   }
+
+});
