@@ -8,17 +8,22 @@ import React from 'react';
 
 type CardConverterProps = {
     handleClose: () => void;
+    code: string;
+    valueConverted: number;
+    inputValue: string;
 }
 
-export default function CardConverted({handleClose} : CardConverterProps) {
+export default function CardConverted({handleClose, code, valueConverted, inputValue} : CardConverterProps) {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.buttonClose} onPress={handleClose}>
          <Text style={{color: "#fff"}}>X</Text>
       </TouchableOpacity>
-      <Text style={{fontSize: 27, fontWeight: "600", color: "#000"}}>1 USD</Text>
+      <Text style={{fontSize: 27, fontWeight: "600", color: "#000"}}>{inputValue ? inputValue : 1} {code}</Text>
       <Text style={{fontSize: 16, fontWeight: "500", color: "#000"}}>Corresponde a</Text>
-      <Text style={{fontSize: 27, fontWeight: "600", color: "#000"}}>R$ 5,03</Text>
+      <Text style={{fontSize: 27, fontWeight: "600", color: "#000"}}>
+        R$ {valueConverted.toFixed(2).replace(".", ",").replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+      </Text>
     </View>
   )
 }
